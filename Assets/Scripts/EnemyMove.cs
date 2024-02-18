@@ -2,54 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMove1 : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Rigidbody2D rb;
+    public float speed; //скорость врага
+    public Transform[] moveSpots; //массив точек
+    private int startPoint; //стартова€ точка
 
-    [Header("Attributes")]
-    [SerializeField] private float moveSpeed = 2f;
-
-    private Transform target; 
-    private int wayIndex = 0;
-
+    private Vector2 direction; //вектор, вычисл€ющий направление следующей точки
+    private int changeCheck; //проверка сменилась ли точка
 
     private void Start()
     {
-        target = LevelManager.main.way[wayIndex];
+        startPoint = 0; //задание первой точки
+        changeCheck = 0; //изначально смен точек нет
     }
 
     private void Update()
     {
-        if (Vector2.Distance(target.position, transform.position) <= 0.1f) //vector2.distance возвращает рассто€ние между a и b
+        transform.position = Vector2.MoveTowards(transform.position, moveSpots[startPoint].position, speed * Time.deltaTime); //движение от точки к новой точке
+
+        Vector2 direction = moveSpots[startPoint].position - moveSpots[startPoint + 1].position; //вычисл€ем направление к следующей точке       
+
+        if (Vector2.Distance(transform.position, moveSpots[startPoint].position) < 0.1f) //если дошЄл, следующа€ точка
         {
-            wayIndex++;
-
-
-            if (wayIndex == LevelManager.main.way.Length)
+            startPoint++; //смена точки
+            changeCheck = 1; //произошла смена точки
+        }
+        if (startPoint == moveSpots.Length - 1) //если точек нет, уничтожение объекта (-1 потому что "2" завершающие точки)
+        {
+            Destroy(gameObject);
+            Debug.Log("¬раг дошЄл!");
+        }
+        if (changeCheck == 1) //если произошла смена точки, смотрим как мен€ть поворот объекта
+        {
+            if (direction.y > 0) //движение вниз
             {
-                Destroy(gameObject);
-                return;
-            } else
-            {
-                target = LevelManager.main.way[wayIndex];
+                transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                //Debug.Log("”словие - 1");
             }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        Vector2 direction = (target.position - transform.position);
-        float distanceToTarget = direction.magnitude;
-
-        if (distanceToTarget < 0.1f)
-        {
-            transform.position = target.position;
-            rb.velocity = Vector2.zero;
-        }
-        else
-        {
-            rb.velocity = direction.normalized * moveSpeed;
+            else if (direction.x < 0) //движение вправо
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+                //Debug.Log("”словие - 2");
+            }
+            else if (direction.x > 0) //движение влево
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                //Debug.Log("”словие - 3");
+            }
+            else //движение вверх
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                //Debug.Log("”словие - 4");
+            }
+            changeCheck = 0; //сброс проверки
         }
     }
 }
