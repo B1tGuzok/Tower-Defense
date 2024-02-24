@@ -52,7 +52,7 @@ public class Manager : Loader<Manager>
             {
                 if (enemiesOnScrene < maxEnemiesOnScrene)
                 {
-                    GameObject newEnemy = Instantiate(enemies[0]) as GameObject;
+                    GameObject newEnemy = Instantiate(enemies[0], transform) as GameObject;
                     newEnemy.transform.position = spawnPoint.transform.position;
                     enemiesOnScrene += 1;
                 }
