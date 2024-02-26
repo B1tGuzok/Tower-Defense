@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class LevelManager : MonoBehaviour
     public Transform[] path; //массив точек
 
     public int currency;
+    public int lives;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         currency = 100;
+        lives = 3;
     }
 
     public void IncreaseCurrency(int amount)
@@ -37,6 +40,19 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Подкопи деньжат");
             return false;
+        }
+    }
+    //----
+    public void MinusLive()
+    {
+        if (lives > 1)
+        {
+            lives--;
+        } else
+        {
+            EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+            enemySpawner.Stop();
+            SceneManager.LoadScene("Menu");
         }
     }
 }
