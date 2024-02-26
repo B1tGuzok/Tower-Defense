@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
         isSpawning = false;
         timeSinceLastSpawn = 0f;
         currentWave++;
-        PlayerPrefs.SetInt("Record", currentWave);
+        LevelManager.main.Record();
         StartCoroutine(StartWave());
     }
 

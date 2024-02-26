@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
@@ -27,8 +28,10 @@ public class Menu : MonoBehaviour
         livesUI.text = LevelManager.main.lives.ToString();
     }
 
-    public void SetSelected()
+    public void Exit()
     {
-
+        EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+        enemySpawner.Stop();
+        SceneManager.LoadScene("Menu");
     }
 }

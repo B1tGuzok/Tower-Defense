@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour
     public int currency;
     public int lives;
 
+    private int check1;
+    private int check2;
+
     private void Awake()
     {
         main = this;
@@ -53,6 +56,20 @@ public class LevelManager : MonoBehaviour
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
             enemySpawner.Stop();
             SceneManager.LoadScene("Menu");
+        }
+    }
+
+    public void Record()
+    {
+        EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+        check1 = PlayerPrefs.GetInt("Record");
+        check2 = enemySpawner.currentWave;
+        if (check2 > check1)
+        {
+            PlayerPrefs.SetInt("Record", check2);
+        } else
+        {
+            return;
         }
     }
 }
