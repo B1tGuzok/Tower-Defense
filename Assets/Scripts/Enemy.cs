@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class Enemy : MonoBehaviour
@@ -79,4 +79,4 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
-}
+}*/
