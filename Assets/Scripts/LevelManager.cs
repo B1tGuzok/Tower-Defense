@@ -24,7 +24,16 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         currency = 100;
-        lives = 3;
+        lives = 10;
+
+        StartCoroutine(StartMoney());
+    }
+
+    private IEnumerator StartMoney()
+    {
+        yield return new WaitForSeconds(10f);
+        currency += 5;
+        StartCoroutine(StartMoney());
     }
 
     public void IncreaseCurrency(int amount)
@@ -46,15 +55,21 @@ public class LevelManager : MonoBehaviour
         }
     }
     //----
-    public void MinusLive()
+    public void MinusLive(int type)
     {
-        if (lives > 1)
+        if (lives > 1 && type == 1)
         {
             lives--;
-        } else
+        } 
+        else if (lives > 2 && type == 2)
+        {
+            lives -= 3;
+        }
+        else
         {
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
             enemySpawner.Stop();
+            StopCoroutine(StartMoney());
             SceneManager.LoadScene("Menu");
         }
     }

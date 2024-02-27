@@ -10,6 +10,7 @@ public class Menu : MonoBehaviour
     [SerializeField] TextMeshProUGUI currencyUI;
     [SerializeField] TextMeshProUGUI waveUI;
     [SerializeField] TextMeshProUGUI livesUI;
+    [SerializeField] TextMeshProUGUI upgradeCostUI;
     [SerializeField] Animator anim;
 
     private bool isMenuOpen = true;
@@ -26,6 +27,16 @@ public class Menu : MonoBehaviour
         currencyUI.text = LevelManager.main.currency.ToString();
         waveUI.text = numberOfWave.currentWave.ToString();
         livesUI.text = LevelManager.main.lives.ToString();
+    }
+
+    public void SetCost(int cost)
+    {
+        upgradeCostUI.text = cost.ToString();
+    }
+    
+    public void ResetCost()
+    {
+        upgradeCostUI.text = "choose tower";
     }
 
     public void Exit()

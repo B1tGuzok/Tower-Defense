@@ -5,8 +5,8 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [Header("Attributes")]
-    [SerializeField] private int hitPoints = 2;
-    [SerializeField] private int currencyWorth = 50;
+    [SerializeField] public int hitPoints = 2;
+    [SerializeField] private int currencyWorth = 10;
 
     private bool isDestroyed = false;
 

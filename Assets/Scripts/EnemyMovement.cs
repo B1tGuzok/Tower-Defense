@@ -15,6 +15,7 @@ public class EnemyMovement : MonoBehaviour
     private int pathIndex = 0;
 
     private Transform safe; //смена направления
+    private int type; //для уменьшения жизней
 
     private float baseSpeed;
 
@@ -34,9 +35,17 @@ public class EnemyMovement : MonoBehaviour
             if (pathIndex == LevelManager.main.path.Length)
             {
                 EnemySpawner.onEnemyDestroy.Invoke();
+                if (this.gameObject.name == "Enemy(Clone)")
+                {
+                    type = 1;
+                } 
+                else if (this.gameObject.name == "TankEnemy(Clone)")
+                {
+                    type = 2;
+                }
                 Destroy(gameObject);
                 //-----
-                LevelManager.main.MinusLive();
+                LevelManager.main.MinusLive(type);
                 return;
             } else
             {

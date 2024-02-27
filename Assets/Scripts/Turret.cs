@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Runtime.CompilerServices;
+using TMPro;
 
 public class Turret : MonoBehaviour
 {
@@ -55,7 +56,7 @@ public class Turret : MonoBehaviour
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= 1f / bps)
+            if (timeUntilFire >= 0.7f / bps)
             {
                 Shoot();
                 timeUntilFire = 0;
@@ -99,12 +100,16 @@ public class Turret : MonoBehaviour
     public void OpenUpgradeUI()
     {
         upgradeUI.SetActive(true);
+        Menu cost = FindObjectOfType<Menu>();
+        cost.SetCost(CalculateCost());
     }
 
     public void CloseUpgradeUI()
     {
         upgradeUI.SetActive(false);
         UIManager.main.SetHoveringState(false);
+        Menu cost = FindObjectOfType<Menu>();
+        cost.ResetCost();
     }
 
     public void Upgrade()
@@ -124,19 +129,19 @@ public class Turret : MonoBehaviour
         Debug.Log("New cost: " + CalculateCost());
     }
 
-    private int CalculateCost()
+    public int CalculateCost()
     {
-        return Mathf.RoundToInt(baseUpgradeCost * Mathf.Pow(level, 0.8f));
+        return Mathf.RoundToInt(baseUpgradeCost * Mathf.Pow(level, 2f));
     }
 
     private float CalculateBPS()
     {
-        return bpsBase * Mathf.Pow(level, 0.6f);
+        return bpsBase * Mathf.Pow(level, 0.1f);
     }
 
     private float CalculateRange()
     {
-        return targetingRange * Mathf.Pow(level, 0.4f);
+        return targetingRange * Mathf.Pow(level, 0.1f);
     }
 
     private void OnDrawGizmosSelected()
