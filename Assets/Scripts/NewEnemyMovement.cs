@@ -1,8 +1,8 @@
-п»їusing System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class NewEnemyMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
@@ -14,65 +14,66 @@ public class EnemyMovement : MonoBehaviour
     private Transform target;
     private int pathIndex = 0;
 
-    private Transform safe; //Г±Г¬ГҐГ­Г  Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГї
-    private int type; //Г¤Г«Гї ГіГ¬ГҐГ­ГјГёГҐГ­ГЁГї Г¦ГЁГ§Г­ГҐГ©
+    private Transform safe; //смена направления
+    private int type; //для уменьшения жизней
 
     private float baseSpeed;
 
     private void Start()
     {
         baseSpeed = moveSpeed;
-        target = LevelManager.main.path[pathIndex];
+        target = LvlManager.main.path[pathIndex];
     }
 
     private void Update()
     {
         if (Vector2.Distance(target.position, transform.position) <= 0.1f)
         {
-            safe = target; //ГЇГ°ГҐГ¤Г»Г¤ГіГ№Г Гї ГІГ®Г·ГЄГ 
+            safe = target; //предыдущая точка
             pathIndex++;
 
-            if (pathIndex == LevelManager.main.path.Length)
+            if (pathIndex == LvlManager.main.path.Length)
             {
-                EnemySpawner.onEnemyDestroy.Invoke();
-                if (this.gameObject.name == "Enemy(Clone)")
+                if (this.gameObject.name == "NewEnemy(Clone)")
                 {
                     type = 1;
                 }
-                else if (this.gameObject.name == "TankEnemy(Clone)")
+                else if (this.gameObject.name == "NewTankEnemy(Clone)")
                 {
                     type = 2;
                 }
-                Destroy(gameObject);
-                //-----
-                LevelManager.main.MinusLive(type);
+                if (!LvlManager.main.MinusLive(type))
+                {
+                    NewEnemySpawner.onEnemyDestroy.Invoke();
+                    Destroy(gameObject);
+                }
                 return;
             }
             else
             {
-                target = LevelManager.main.path[pathIndex];
+                target = LvlManager.main.path[pathIndex];
             }
 
             Vector2 check = (target.position - safe.position);
-            if (check.y > 0) //Г¤ГўГЁГ¦ГҐГ­ГЁГҐ ГўГўГҐГ°Гµ
+            if (check.y > 0) //движение вверх
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                //Debug.Log("Г“Г±Г«Г®ГўГЁГҐ - 1");
+                //Debug.Log("Условие - 1");
             }
-            else if (check.y < 0) //Г¤ГўГЁГ¦ГҐГ­ГЁГҐ ГўГ«ГҐГўГ®
+            else if (check.y < 0) //движение влево
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, -180f);
-                //Debug.Log("Г“Г±Г«Г®ГўГЁГҐ - 2");
+                //Debug.Log("Условие - 2");
             }
-            else if (check.x < 0) //Г¤ГўГЁГ¦ГҐГ­ГЁГҐ ГўГЇГ°Г ГўГ®
+            else if (check.x < 0) //движение вправо
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-                //Debug.Log("Г“Г±Г«Г®ГўГЁГҐ - 3");
+                //Debug.Log("Условие - 3");
             }
-            else if (check.x > 0) //Г¤ГўГЁГ¦ГҐГ­ГЁГҐ ГўГ­ГЁГ§
+            else if (check.x > 0) //движение вниз
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-                //Debug.Log("Г“Г±Г«Г®ГўГЁГҐ - 4");
+                //Debug.Log("Условие - 4");
             }
 
         }

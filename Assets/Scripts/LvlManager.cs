@@ -1,14 +1,14 @@
-п»їusing System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LvlManager : MonoBehaviour
 {
-    public static LevelManager main;
+    public static LvlManager main;
 
     public Transform startPoint;
-    public Transform[] path;
+    public Transform[] path; //массив точек
 
     public int currency;
     public int lives;
@@ -23,18 +23,18 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        currency = 100;
-        lives = 10;
+        currency = 10000;
+        lives = 1;
 
-        StartCoroutine(StartMoney());
+        //StartCoroutine(StartMoney());
     }
 
-    private IEnumerator StartMoney()
-    {
-        yield return new WaitForSeconds(10f);
-        currency += 5;
-        StartCoroutine(StartMoney());
-    }
+    //private IEnumerator StartMoney()
+    //{
+    //    yield return new WaitForSeconds(10f);
+    //    currency += 5;
+    //    StartCoroutine(StartMoney());
+    //}
 
     public void IncreaseCurrency(int amount)
     {
@@ -51,27 +51,31 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("ГЏГ®Г¤ГЄГ®ГЇГЁ Г¤ГҐГ­ГјГ¦Г ГІ");
+            Debug.Log("Подкопи деньжат");
             return false;
         }
     }
     //----
-    public void MinusLive(int type)
+    public bool MinusLive(int type)
     {
         if (lives > 1 && type == 1)
         {
             lives--;
+            return false; //жизни ещё остались
         }
         else if (lives > 2 && type == 2)
         {
             lives -= 3;
+            return false;
         }
         else
         {
-            EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+            NewEnemySpawner enemySpawner = FindObjectOfType<NewEnemySpawner>();
             enemySpawner.Stop();
-            StopCoroutine(StartMoney());
+            //StopCoroutine(StartMoney());
             SceneManager.LoadScene("Menu");
+            Debug.Log($"Жизни всё!");
+            return true;
         }
     }
 

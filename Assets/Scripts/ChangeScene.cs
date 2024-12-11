@@ -17,12 +17,13 @@ public class ChangeScene : MonoBehaviour
 
     public void OpenLvl1() { SceneManager.LoadScene("Lvl1"); }
 
-    public void OpenButchery() { SceneManager.LoadScene("Game"); }
+    public void OpenButchery() { SceneManager.LoadScene("Game"); PlayerPrefs.SetInt("ModeChoose", -1); }
 
     public void OpenExit() { SceneManager.LoadScene("BeforeEnd"); }
 
     public void ShowLvlButtons()
     {
+        PlayerPrefs.SetInt("ModeChoose", 1);
         modeButtons.SetActive(false);
         topButton.SetActive(false);
         lvlButtons.SetActive(true);
