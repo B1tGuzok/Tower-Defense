@@ -15,15 +15,20 @@ public class ChangeScene : MonoBehaviour
 
     public void OpenTop() { SceneManager.LoadScene("Top"); }
 
-    public void OpenLvl1() { SceneManager.LoadScene("Lvl1"); }
+    public void OpenLvl1() { SceneManager.LoadScene("Lvl1"); GameData.LvlChoice = 1; }
 
-    public void OpenButchery() { SceneManager.LoadScene("Game"); PlayerPrefs.SetInt("ModeChoose", -1); }
+    public void OpenButchery() {
+        SceneManager.LoadScene("Game");
+        GameData.ModeChoice = -1;
+        //PlayerPrefs.SetInt("ModeChoose", -1);
+    }
 
     public void OpenExit() { SceneManager.LoadScene("BeforeEnd"); }
 
     public void ShowLvlButtons()
     {
-        PlayerPrefs.SetInt("ModeChoose", 1);
+        GameData.ModeChoice = 1;
+        //PlayerPrefs.SetInt("ModeChoose", 1);
         modeButtons.SetActive(false);
         topButton.SetActive(false);
         lvlButtons.SetActive(true);

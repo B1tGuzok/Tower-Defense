@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager main;
 
+    public Image loseWindow;
+
     public Transform startPoint;
     public Transform[] path;
 
     public int currency;
-    public int lives;
+    [HideInInspector] public int lives;
+    public int maxLives; //for EnemySpawner
 
     private int check1;
     private int check2;
@@ -23,10 +28,30 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        currency = 100;
-        lives = 10;
+        currency = 1000;
+        loseWindow.enabled = false;
 
-        StartCoroutine(StartMoney());
+        if (GameData.ModeChoice == -1) //butchery
+        {
+            lives = 10;
+            StartCoroutine(StartMoney());
+        }
+        else if (GameData.ModeChoice == 1) //campaign
+        {
+            switch (GameData.LvlChoice)
+            {
+                case 1:
+                    lives = 6;
+                    break;
+                case 2:
+                    lives = 15;
+                    break;
+                case 3:
+                    lives = 20;
+                    break;
+            }
+        }
+        maxLives = lives;
     }
 
     private IEnumerator StartMoney()
@@ -55,7 +80,7 @@ public class LevelManager : MonoBehaviour
             return false;
         }
     }
-    //----
+
     public void MinusLive(int type)
     {
         if (lives > 1 && type == 1)
@@ -72,6 +97,31 @@ public class LevelManager : MonoBehaviour
             enemySpawner.Stop();
             StopCoroutine(StartMoney());
             SceneManager.LoadScene("Menu");
+        }
+    }
+
+    //from new LevelManager Script (new hurt logic)
+    public bool BoolMinusLive(int type)
+    {
+        if (lives > 1 && type == 1)
+        {
+            lives--;
+            Debug.Log($"Минус жизнь!");
+            return false; //жизни ещё остались
+        }
+        else if (lives > 2 && type == 2)
+        {
+            lives -= 3;
+            Debug.Log($"Минус жизнь!");
+            return false;
+        }
+        else
+        {
+            EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+            enemySpawner.Stop();
+            loseWindow.enabled = true;
+            Debug.Log($"Жизни всё!");
+            return true;
         }
     }
 

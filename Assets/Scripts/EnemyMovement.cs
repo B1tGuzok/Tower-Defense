@@ -34,7 +34,6 @@ public class EnemyMovement : MonoBehaviour
 
             if (pathIndex == LevelManager.main.path.Length)
             {
-                EnemySpawner.onEnemyDestroy.Invoke();
                 if (this.gameObject.name == "Enemy(Clone)")
                 {
                     type = 1;
@@ -43,9 +42,19 @@ public class EnemyMovement : MonoBehaviour
                 {
                     type = 2;
                 }
+
+                Debug.Log($"Минусую жизнь!");
+                if (GameData.ModeChoice == 1) //campaign
+                {
+                    LevelManager.main.BoolMinusLive(type);
+                }
+                else if (GameData.ModeChoice == -1) //butchery
+                {
+                    LevelManager.main.MinusLive(type);
+                }
+                Debug.Log($"Уничтожаюсь!");
+                EnemySpawner.onEnemyDestroy.Invoke();
                 Destroy(gameObject);
-                //-----
-                LevelManager.main.MinusLive(type);
                 return;
             }
             else
