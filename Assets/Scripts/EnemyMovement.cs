@@ -46,14 +46,19 @@ public class EnemyMovement : MonoBehaviour
                 Debug.Log($"Минусую жизнь!");
                 if (GameData.ModeChoice == 1) //campaign
                 {
-                    LevelManager.main.BoolMinusLive(type);
+                    bool lose = LevelManager.main.BoolMinusLive(type);
+                    if (!lose)
+                    {
+                        Debug.Log($"Уничтожаюсь!");
+                        EnemySpawner.onEnemyDestroy.Invoke();
+                    }
                 }
                 else if (GameData.ModeChoice == -1) //butchery
                 {
                     LevelManager.main.MinusLive(type);
+                    Debug.Log($"Уничтожаюсь!");
+                    EnemySpawner.onEnemyDestroy.Invoke();
                 }
-                Debug.Log($"Уничтожаюсь!");
-                EnemySpawner.onEnemyDestroy.Invoke();
                 Destroy(gameObject);
                 return;
             }

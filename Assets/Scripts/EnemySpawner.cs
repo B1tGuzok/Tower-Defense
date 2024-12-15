@@ -30,12 +30,13 @@ public class EnemySpawner : MonoBehaviour
 
     //CAMPAIGN
     private int waveCount = 0;
-    private int[] enemiesCountPerWave = new int[] { 4 };
+    private int[] enemiesCountPerWave = new int[] { 1 };
     private int enemiesPerLvl = 0; //количество врагов за весь уровень
     private int destroyedEnemies = 0; //количество уничтоженных врагов (либо прошли до конца, либо убили защитники)
 
     public Image winWindow;
     public Sprite win1, win2, win3; //win1 - gold
+    public GameObject ok;
 
     private void Awake()
     {
@@ -45,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         winWindow.enabled = false;
+        ok.SetActive(false);
         if (GameData.ModeChoice == 1) //campaign
         {
             StartCoroutine(MineStartWave());
@@ -87,16 +89,20 @@ public class EnemySpawner : MonoBehaviour
                 if (LevelManager.main.maxLives == LevelManager.main.lives)
                 {
                     winWindow.sprite = win1;
+                    LevelManager.main.WriteLvlProgress(3);
                 }
                 else if (LevelManager.main.lives >= LevelManager.main.maxLives / 2)
                 {
                     winWindow.sprite = win2;
+                    LevelManager.main.WriteLvlProgress(2);
                 }
                 else
                 {
                     winWindow.sprite = win3;
+                    LevelManager.main.WriteLvlProgress(1);
                 }
                 winWindow.enabled = true;
+                ok.SetActive(true);
                 Debug.Log($"Вы убили последнего!");
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager main;
 
     public Image loseWindow;
+    public GameObject repeat;
 
     public Transform startPoint;
     public Transform[] path;
@@ -30,6 +32,7 @@ public class LevelManager : MonoBehaviour
     {
         currency = 1000;
         loseWindow.enabled = false;
+        repeat.SetActive(false);
 
         if (GameData.ModeChoice == -1) //butchery
         {
@@ -41,7 +44,7 @@ public class LevelManager : MonoBehaviour
             switch (GameData.LvlChoice)
             {
                 case 1:
-                    lives = 6;
+                    lives = 1;
                     break;
                 case 2:
                     lives = 15;
@@ -120,6 +123,7 @@ public class LevelManager : MonoBehaviour
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
             enemySpawner.Stop();
             loseWindow.enabled = true;
+            repeat.SetActive(true);
             Debug.Log($"Жизни всё!");
             return true;
         }
@@ -134,9 +138,20 @@ public class LevelManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("Record", check2);
         }
-        else
+    }
+
+    public void WriteLvlProgress(int gotStar) //3 - gold
+    {
+        int openedLvl = PlayerPrefs.GetInt("openedLvl");
+        int newLvl = GameData.LvlChoice;
+        int star = PlayerPrefs.GetInt($"star{GameData.LvlChoice}");
+        if (newLvl > openedLvl)
         {
-            return;
+            PlayerPrefs.SetInt("openedLvl", newLvl);
+        }
+        if (gotStar > star)
+        {
+            PlayerPrefs.SetInt($"star{GameData.LvlChoice - 1}", gotStar);
         }
     }
 }

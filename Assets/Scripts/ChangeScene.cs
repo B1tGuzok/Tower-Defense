@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ChangeScene : MonoBehaviour
 {
@@ -20,7 +21,6 @@ public class ChangeScene : MonoBehaviour
     public void OpenButchery() {
         SceneManager.LoadScene("Game");
         GameData.ModeChoice = -1;
-        //PlayerPrefs.SetInt("ModeChoose", -1);
     }
 
     public void OpenExit() { SceneManager.LoadScene("BeforeEnd"); }
@@ -28,7 +28,6 @@ public class ChangeScene : MonoBehaviour
     public void ShowLvlButtons()
     {
         GameData.ModeChoice = 1;
-        //PlayerPrefs.SetInt("ModeChoose", 1);
         modeButtons.SetActive(false);
         topButton.SetActive(false);
         lvlButtons.SetActive(true);
@@ -41,6 +40,12 @@ public class ChangeScene : MonoBehaviour
         topButton.SetActive(true);
         lvlButtons.SetActive(false);
         homeButton.SetActive(false);
+    }
+
+    public void Ok()
+    {
+        GameData.OpenLvls = true;
+        OpenHome();
     }
 
     public void Exit()
