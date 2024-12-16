@@ -103,6 +103,8 @@ public class EnemySpawner : MonoBehaviour
                 }
                 winWindow.enabled = true;
                 ok.SetActive(true);
+                LevelManager.main.pause.SetActive(false);
+                LevelManager.main.resume.SetActive(false);
                 Debug.Log($"Вы убили последнего!");
             }
         }

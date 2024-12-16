@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour
     public Image loseWindow;
     public GameObject repeat;
 
+    public GameObject pause;
+    public GameObject resume;
+
     public Transform startPoint;
     public Transform[] path;
 
@@ -33,6 +36,7 @@ public class LevelManager : MonoBehaviour
         currency = 1000;
         loseWindow.enabled = false;
         repeat.SetActive(false);
+        resume.SetActive(false);
 
         if (GameData.ModeChoice == -1) //butchery
         {
@@ -124,6 +128,8 @@ public class LevelManager : MonoBehaviour
             enemySpawner.Stop();
             loseWindow.enabled = true;
             repeat.SetActive(true);
+            pause.SetActive(false);
+            resume.SetActive(false);
             Debug.Log($"Жизни всё!");
             return true;
         }
@@ -153,5 +159,19 @@ public class LevelManager : MonoBehaviour
         {
             PlayerPrefs.SetInt($"star{GameData.LvlChoice - 1}", gotStar);
         }
+    }
+
+    public void Pause()
+    {
+        pause.SetActive(false);
+        resume.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void Resume()
+    {
+        pause.SetActive(true);
+        resume.SetActive(false);
+        Time.timeScale = 1f;
     }
 }
