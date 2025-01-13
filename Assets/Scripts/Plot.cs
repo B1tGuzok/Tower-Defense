@@ -7,7 +7,7 @@ public class Plot : MonoBehaviour
     [Header("References")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Color hoverColor;
-    
+
     private GameObject towerObj;
     public Turret turret;
     private Color startColor;
@@ -46,7 +46,6 @@ public class Plot : MonoBehaviour
         }
 
         LevelManager.main.SpendCurrency(towerToBuild.cost);
-
         towerObj = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity);
         turret = towerObj.GetComponent<Turret>();
     }

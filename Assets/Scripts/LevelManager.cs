@@ -26,6 +26,8 @@ public class LevelManager : MonoBehaviour
     private int check1;
     private int check2;
 
+    public AudioSource loseSound;
+
     private void Awake()
     {
         main = this;
@@ -33,27 +35,31 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        currency = 1000;
         loseWindow.enabled = false;
         repeat.SetActive(false);
         resume.SetActive(false);
 
         if (GameData.ModeChoice == -1) //butchery
         {
+            currency = 100;
             lives = 10;
             StartCoroutine(StartMoney());
         }
         else if (GameData.ModeChoice == 1) //campaign
         {
+            Time.timeScale = 1f;
             switch (GameData.LvlChoice)
             {
                 case 1:
-                    lives = 1;
+                    currency = 100;
+                    lives = 10;
                     break;
                 case 2:
+                    currency = 150;
                     lives = 15;
                     break;
                 case 3:
+                    currency = 200;
                     lives = 20;
                     break;
             }
@@ -127,9 +133,11 @@ public class LevelManager : MonoBehaviour
             EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
             enemySpawner.Stop();
             loseWindow.enabled = true;
+            loseSound.Play();
             repeat.SetActive(true);
             pause.SetActive(false);
             resume.SetActive(false);
+            Time.timeScale = 0f;
             Debug.Log($"Жизни всё!");
             return true;
         }
@@ -142,7 +150,7 @@ public class LevelManager : MonoBehaviour
         check2 = enemySpawner.currentWave;
         if (check2 > check1)
         {
-            PlayerPrefs.SetInt("Record", check2);
+            PlayerPrefs.SetInt("Record", check2 - 1);
         }
     }
 

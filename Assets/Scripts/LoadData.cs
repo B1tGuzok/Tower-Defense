@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
@@ -16,6 +15,7 @@ public class LoadData : MonoBehaviour
     private Dictionary<string, Sprite> spriteDictionary;
     [SerializeField] int spriteQuantity; //for Debug
 
+    [SerializeField] GameObject aboutWindow; //for about
     [SerializeField] GameObject lvlButtons; //for open lvlButtons after "Ok" in campaign
 
     [SerializeField] GameObject[] lvls;
@@ -25,6 +25,7 @@ public class LoadData : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "Menu")
         {
+            aboutWindow.SetActive(false);
             Sprite[] sprites = Resources.LoadAll<Sprite>("LvlButtons");
             spriteQuantity = sprites.Length;
             spriteDictionary = new Dictionary<string, Sprite>();
@@ -35,6 +36,7 @@ public class LoadData : MonoBehaviour
             LoadSprites();
             if (GameData.OpenLvls == true)
             {
+                aboutWindow.SetActive(false);
                 lvlButtons.GetComponent<ChangeScene>().ShowLvlButtons();
                 GameData.OpenLvls = false;
             }
@@ -63,6 +65,16 @@ public class LoadData : MonoBehaviour
                 lvls[i].GetComponent<Button>().enabled = false;
             }
         }
+    }
+
+    public void ShowAbout()
+    {
+        aboutWindow.SetActive(true);
+    }
+
+    public void CloseAbout()
+    {
+        aboutWindow.SetActive(false);
     }
 
     private void ShowWaves()

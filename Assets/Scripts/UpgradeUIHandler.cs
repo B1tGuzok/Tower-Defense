@@ -24,5 +24,3 @@ public class UpgradeUIHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         cost.ResetCost();
     }
 }
-
-

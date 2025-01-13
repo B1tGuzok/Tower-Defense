@@ -14,8 +14,8 @@ public class EnemyMovement : MonoBehaviour
     private Transform target;
     private int pathIndex = 0;
 
-    private Transform safe; //ñìåíà íàïðàâëåíèÿ
-    private int type; //äëÿ óìåíüøåíèÿ æèçíåé
+    private Transform safe;
+    private int type;
 
     private float baseSpeed;
 
@@ -29,7 +29,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (Vector2.Distance(target.position, transform.position) <= 0.1f)
         {
-            safe = target; //ïðåäûäóùàÿ òî÷êà
+            safe = target;
             pathIndex++;
 
             if (pathIndex == LevelManager.main.path.Length)
@@ -68,25 +68,21 @@ public class EnemyMovement : MonoBehaviour
             }
 
             Vector2 check = (target.position - safe.position);
-            if (check.y > 0) //äâèæåíèå ââåðõ
+            if (check.y > 0)
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                //Debug.Log("Óñëîâèå - 1");
             }
-            else if (check.y < 0) //äâèæåíèå âëåâî
+            else if (check.y < 0)
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, -180f);
-                //Debug.Log("Óñëîâèå - 2");
             }
-            else if (check.x < 0) //äâèæåíèå âïðàâî
+            else if (check.x < 0)
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-                //Debug.Log("Óñëîâèå - 3");
             }
-            else if (check.x > 0) //äâèæåíèå âíèç
+            else if (check.x > 0)
             {
                 transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-                //Debug.Log("Óñëîâèå - 4");
             }
 
         }

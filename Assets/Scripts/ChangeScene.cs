@@ -18,6 +18,10 @@ public class ChangeScene : MonoBehaviour
 
     public void OpenLvl1() { SceneManager.LoadScene("Lvl1"); GameData.LvlChoice = 1; }
 
+    public void OpenLvl2() { SceneManager.LoadScene("Lvl2"); GameData.LvlChoice = 2; }
+
+    public void OpenLvl3() { SceneManager.LoadScene("Lvl3"); GameData.LvlChoice = 3; }
+
     public void OpenButchery() {
         SceneManager.LoadScene("Game");
         GameData.ModeChoice = -1;

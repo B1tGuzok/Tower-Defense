@@ -33,7 +33,7 @@ public class TurretSlomo : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            for(int i = 0; i < hits.Length; i++)
+            for (int i = 0; i < hits.Length; i++)
             {
                 RaycastHit2D hit = hits[i];
 
@@ -50,11 +50,5 @@ public class TurretSlomo : MonoBehaviour
         yield return new WaitForSeconds(freezeTime);
 
         em.ResetSpeed();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Handles.color = Color.cyan;
-        Handles.DrawWireDisc(transform.position, transform.forward, targetingRange);
     }
 }

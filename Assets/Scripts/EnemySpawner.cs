@@ -30,10 +30,11 @@ public class EnemySpawner : MonoBehaviour
 
     //CAMPAIGN
     private int waveCount = 0;
-    private int[] enemiesCountPerWave = new int[] { 1 };
+    private int[] enemiesCountPerWave = new int[] { 5, 7, 9, 11 };
     private int enemiesPerLvl = 0; //количество врагов за весь уровень
     private int destroyedEnemies = 0; //количество уничтоженных врагов (либо прошли до конца, либо убили защитники)
 
+    public AudioSource winSound;
     public Image winWindow;
     public Sprite win1, win2, win3; //win1 - gold
     public GameObject ok;
@@ -45,10 +46,23 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
         winWindow.enabled = false;
         ok.SetActive(false);
         if (GameData.ModeChoice == 1) //campaign
         {
+            if (GameData.LvlChoice == 2)
+            {
+                for (int i = 0; i < enemiesCountPerWave.Length; i++) {
+                    enemiesCountPerWave[i] *= 2;
+                }
+            }
+            else if (GameData.LvlChoice == 3)
+            {
+                for (int i = 0; i < enemiesCountPerWave.Length; i++) {
+                    enemiesCountPerWave[i] *= 3;
+                }
+            }
             StartCoroutine(MineStartWave());
         }
         else if (GameData.ModeChoice == -1) //butchery
@@ -102,9 +116,11 @@ public class EnemySpawner : MonoBehaviour
                     LevelManager.main.WriteLvlProgress(1);
                 }
                 winWindow.enabled = true;
+                winSound.Play();
                 ok.SetActive(true);
                 LevelManager.main.pause.SetActive(false);
                 LevelManager.main.resume.SetActive(false);
+                Time.timeScale = 0f;
                 Debug.Log($"Вы убили последнего!");
             }
         }
@@ -134,7 +150,7 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         int index = Random.Range(0, 100);
-        if (index >= 95)
+        if (index >= 92)
         {
             GameObject prefabToSpawn = enemyPrefabs[1];
             Instantiate(prefabToSpawn, LevelManager.main.startPoint.position, Quaternion.Euler(0f, 0f, 180f));
@@ -173,7 +189,7 @@ public class EnemySpawner : MonoBehaviour
             for (int i = 0; i < enemiesCountPerWave[waveCount]; i++)
             {
                 int index = Random.Range(0, 100);
-                if (index >= 95)
+                if (index >= 92)
                 {
                     GameObject prefabToSpawn = enemyPrefabs[1];
                     Instantiate(prefabToSpawn, LevelManager.main.startPoint.position, Quaternion.Euler(0f, 0f, 180f));
